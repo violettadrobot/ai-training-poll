@@ -1,462 +1,457 @@
-Here’s the complete, most updated code. Copy ALL of this and paste it into your GitHub `index.html` file:
-
-```html
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI for Novices: From Curious to Confident</title>
     <style>
-       sheet.appendRow([
-  new Date(),           // Column A: Timestamp
-  data.name,           // Column B: Name
-  data.email,          // Column C: Email Address
-  data.company,        // Column D: Company
-  data.dates.join(', ') // Column E: Selected Dates
-]);
+        * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #0a0e27;
-            min-height: 100vh;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            position: relative;
-            overflow-x: hidden;
-        }
+```
+    body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: #0a0e27;
+        min-height: 100vh;
+        padding: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+        overflow-x: hidden;
+    }
 
-        body::before {
-            content: '';
-            position: fixed;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-                        radial-gradient(circle at 40% 10%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
-            animation: drift 20s ease-in-out infinite;
-            pointer-events: none;
-        }
+    body::before {
+        content: '';
+        position: fixed;
+        top: -50%;
+        left: -50%;
+        width: 200%;
+        height: 200%;
+        background: radial-gradient(circle at 20% 50%, rgba(120, 119, 198, 0.15) 0%, transparent 50%),
+                    radial-gradient(circle at 80% 80%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
+                    radial-gradient(circle at 40% 10%, rgba(168, 85, 247, 0.1) 0%, transparent 50%);
+        animation: drift 20s ease-in-out infinite;
+        pointer-events: none;
+    }
 
-        @keyframes drift {
-            0%, 100% { transform: translate(0, 0) rotate(0deg); }
-            33% { transform: translate(30px, -30px) rotate(5deg); }
-            66% { transform: translate(-20px, 20px) rotate(-5deg); }
-        }
+    @keyframes drift {
+        0%, 100% { transform: translate(0, 0) rotate(0deg); }
+        33% { transform: translate(30px, -30px) rotate(5deg); }
+        66% { transform: translate(-20px, 20px) rotate(-5deg); }
+    }
 
+    .container {
+        background: rgba(255, 255, 255, 0.95);
+        backdrop-filter: blur(20px);
+        border-radius: 24px;
+        box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                    0 0 0 1px rgba(255, 255, 255, 0.1);
+        max-width: 900px;
+        width: 100%;
+        padding: 48px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .header {
+        text-align: center;
+        margin-bottom: 40px;
+        position: relative;
+    }
+
+    .ai-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        color: white;
+        padding: 8px 20px;
+        border-radius: 20px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-bottom: 16px;
+        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
+    }
+
+    .ai-badge::before {
+        content: '✨';
+        font-size: 16px;
+    }
+
+    .header h1 {
+        color: #1e293b;
+        font-size: 32px;
+        font-weight: 700;
+        margin-bottom: 12px;
+        line-height: 1.2;
+        background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+    }
+
+    .header .subtitle {
+        color: #64748b;
+        font-size: 17px;
+        font-weight: 500;
+    }
+
+    .info-box {
+        background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
+        border: 1px solid #e2e8f0;
+        border-left: 4px solid #6366f1;
+        padding: 24px;
+        border-radius: 16px;
+        margin-bottom: 32px;
+        position: relative;
+    }
+
+    .info-box::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, #6366f1, transparent);
+    }
+
+    .info-box h3 {
+        color: #1e293b;
+        font-size: 18px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-box h3::before {
+        content: '🎯';
+        font-size: 20px;
+    }
+
+    .info-box ul {
+        color: #475569;
+        line-height: 1.8;
+        padding-left: 24px;
+    }
+
+    .info-box ul li {
+        margin-bottom: 10px;
+        position: relative;
+    }
+
+    .info-box ul li::marker {
+        color: #6366f1;
+    }
+
+    .user-info-section {
+        margin-bottom: 32px;
+    }
+
+    .user-info-section h3 {
+        color: #1e293b;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .user-info-section h3::before {
+        content: '👤';
+        font-size: 22px;
+    }
+
+    .input-group {
+        margin-bottom: 16px;
+    }
+
+    .input-label {
+        display: block;
+        color: #475569;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+
+    .text-input {
+        width: 100%;
+        padding: 14px 16px;
+        border: 2px solid #e2e8f0;
+        border-radius: 12px;
+        font-size: 16px;
+        transition: all 0.2s ease;
+        background: white;
+    }
+
+    .text-input:focus {
+        outline: none;
+        border-color: #6366f1;
+        box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    }
+
+    .voting-section h3 {
+        color: #1e293b;
+        font-size: 20px;
+        font-weight: 700;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .voting-section h3::before {
+        content: '📅';
+        font-size: 22px;
+    }
+
+    .date-options {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 32px;
+    }
+
+    .date-option {
+        background: white;
+        border: 2px solid #e2e8f0;
+        border-radius: 14px;
+        padding: 18px 20px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .date-option::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+        z-index: 0;
+    }
+
+    .date-option:hover {
+        border-color: #6366f1;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(99, 102, 241, 0.15);
+    }
+
+    .date-option.selected {
+        border-color: #6366f1;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
+    }
+
+    .date-option.selected::before {
+        opacity: 1;
+    }
+
+    .date-info {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        position: relative;
+        z-index: 1;
+    }
+
+    .date-day {
+        font-weight: 700;
+        font-size: 18px;
+        color: #1e293b;
+        transition: color 0.3s ease;
+    }
+
+    .date-option.selected .date-day {
+        color: white;
+    }
+
+    .date-details {
+        color: #64748b;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+    }
+
+    .date-option.selected .date-details {
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    .checkmark {
+        width: 28px;
+        height: 28px;
+        border: 2px solid #cbd5e1;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        position: relative;
+        z-index: 1;
+        background: white;
+    }
+
+    .date-option.selected .checkmark {
+        border-color: white;
+        background: white;
+    }
+
+    .checkmark::after {
+        content: '✓';
+        color: #6366f1;
+        font-size: 18px;
+        font-weight: bold;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .date-option.selected .checkmark::after {
+        opacity: 1;
+    }
+
+    .submit-btn {
+        width: 100%;
+        background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+        color: white;
+        border: none;
+        padding: 18px;
+        border-radius: 14px;
+        font-size: 18px;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .submit-btn::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+        transition: left 0.5s ease;
+    }
+
+    .submit-btn:hover:not(:disabled)::before {
+        left: 100%;
+    }
+
+    .submit-btn:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5);
+    }
+
+    .submit-btn:disabled {
+        background: #cbd5e1;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+    }
+
+    .submit-btn.loading {
+        background: #94a3b8;
+    }
+
+    .result-message {
+        margin-top: 20px;
+        padding: 18px;
+        border-radius: 12px;
+        text-align: center;
+        font-weight: 600;
+        display: none;
+        animation: slideIn 0.4s ease;
+    }
+
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .result-message.success {
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        color: white;
+        display: block;
+        box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+    }
+
+    .result-message.error {
+        background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+        color: white;
+        display: block;
+        box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
+    }
+
+    .footer {
+        margin-top: 36px;
+        text-align: center;
+        color: #64748b;
+        font-size: 14px;
+        padding-top: 24px;
+        border-top: 1px solid #e2e8f0;
+    }
+
+    .footer strong {
+        color: #1e293b;
+        display: block;
+        margin-bottom: 8px;
+    }
+
+    .footer a {
+        color: #6366f1;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.2s ease;
+    }
+
+    .footer a:hover {
+        color: #a855f7;
+    }
+
+    @media (max-width: 600px) {
         .container {
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(20px);
-            border-radius: 24px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5),
-                        0 0 0 1px rgba(255, 255, 255, 0.1);
-            max-width: 750px;
-            width: 100%;
-            padding: 48px;
-            position: relative;
-            z-index: 1;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 40px;
-            position: relative;
-        }
-
-        .ai-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            color: white;
-            padding: 8px 20px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 600;
-            letter-spacing: 0.5px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.4);
-        }
-
-        .ai-badge::before {
-            content: '✨';
-            font-size: 16px;
+            padding: 32px 24px;
         }
 
         .header h1 {
-            color: #1e293b;
-            font-size: 32px;
-            font-weight: 700;
-            margin-bottom: 12px;
-            line-height: 1.2;
-            background: linear-gradient(135deg, #1e293b 0%, #475569 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .header .subtitle {
-            color: #64748b;
-            font-size: 17px;
-            font-weight: 500;
-        }
-
-        .info-box {
-            background: linear-gradient(135deg, #f8fafc 0%, #f1f5f9 100%);
-            border: 1px solid #e2e8f0;
-            border-left: 4px solid #6366f1;
-            padding: 24px;
-            border-radius: 16px;
-            margin-bottom: 32px;
-            position: relative;
-        }
-
-        .info-box::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, #6366f1, transparent);
-        }
-
-        .info-box h3 {
-            color: #1e293b;
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .info-box h3::before {
-            content: '🎯';
-            font-size: 20px;
-        }
-
-        .info-box ul {
-            color: #475569;
-            line-height: 1.8;
-            padding-left: 24px;
-        }
-
-        .info-box ul li {
-            margin-bottom: 10px;
-            position: relative;
-        }
-
-        .info-box ul li::marker {
-            color: #6366f1;
-        }
-
-        .user-info-section {
-            margin-bottom: 32px;
-        }
-
-        .user-info-section h3 {
-            color: #1e293b;
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .user-info-section h3::before {
-            content: '👤';
-            font-size: 22px;
-        }
-
-        .input-group {
-            margin-bottom: 16px;
-        }
-
-        .input-label {
-            display: block;
-            color: #475569;
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .text-input {
-            width: 100%;
-            padding: 14px 16px;
-            border: 2px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 16px;
-            transition: all 0.2s ease;
-            background: white;
-        }
-
-        .text-input:focus {
-            outline: none;
-            border-color: #6366f1;
-            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
-        }
-
-        .voting-section h3 {
-            color: #1e293b;
-            font-size: 20px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .voting-section h3::before {
-            content: '📅';
-            font-size: 22px;
-        }
-
-        .date-options {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 32px;
-        }
-
-        .date-option {
-            background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 14px;
-            padding: 18px 20px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .date-option::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 0;
-        }
-
-        .date-option:hover {
-            border-color: #6366f1;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.15);
-        }
-
-        .date-option.selected {
-            border-color: #6366f1;
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.3);
-        }
-
-        .date-option.selected::before {
-            opacity: 1;
+            font-size: 26px;
         }
 
         .date-info {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            position: relative;
-            z-index: 1;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
         }
+    }
+</style>
+```
 
-        .date-day {
-            font-weight: 700;
-            font-size: 18px;
-            color: #1e293b;
-            transition: color 0.3s ease;
-        }
-
-        .date-option.selected .date-day {
-            color: white;
-        }
-
-        .date-details {
-            color: #64748b;
-            font-size: 14px;
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .date-option.selected .date-details {
-            color: rgba(255, 255, 255, 0.9);
-        }
-
-        .checkmark {
-            width: 28px;
-            height: 28px;
-            border: 2px solid #cbd5e1;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-            position: relative;
-            z-index: 1;
-            background: white;
-        }
-
-        .date-option.selected .checkmark {
-            border-color: white;
-            background: white;
-        }
-
-        .checkmark::after {
-            content: '✓';
-            color: #6366f1;
-            font-size: 18px;
-            font-weight: bold;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        .date-option.selected .checkmark::after {
-            opacity: 1;
-        }
-
-        .submit-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
-            color: white;
-            border: none;
-            padding: 18px;
-            border-radius: 14px;
-            font-size: 18px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 16px rgba(99, 102, 241, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .submit-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .submit-btn:hover:not(:disabled)::before {
-            left: 100%;
-        }
-
-        .submit-btn:hover:not(:disabled) {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5);
-        }
-
-        .submit-btn:disabled {
-            background: #cbd5e1;
-            cursor: not-allowed;
-            transform: none;
-            box-shadow: none;
-        }
-
-        .submit-btn.loading {
-            background: #94a3b8;
-        }
-
-        .result-message {
-            margin-top: 20px;
-            padding: 18px;
-            border-radius: 12px;
-            text-align: center;
-            font-weight: 600;
-            display: none;
-            animation: slideIn 0.4s ease;
-        }
-
-        @keyframes slideIn {
-            from {
-                opacity: 0;
-                transform: translateY(-10px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .result-message.success {
-            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
-            color: white;
-            display: block;
-            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
-        }
-
-        .result-message.error {
-            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-            color: white;
-            display: block;
-            box-shadow: 0 4px 16px rgba(239, 68, 68, 0.3);
-        }
-
-        .footer {
-            margin-top: 36px;
-            text-align: center;
-            color: #64748b;
-            font-size: 14px;
-            padding-top: 24px;
-            border-top: 1px solid #e2e8f0;
-        }
-
-        .footer strong {
-            color: #1e293b;
-            display: block;
-            margin-bottom: 8px;
-        }
-
-        .footer a {
-            color: #6366f1;
-            text-decoration: none;
-            font-weight: 600;
-            transition: color 0.2s ease;
-        }
-
-        .footer a:hover {
-            color: #a855f7;
-        }
-
-        @media (max-width: 600px) {
-            .container {
-                padding: 32px 24px;
-            }
-
-            .header h1 {
-                font-size: 26px;
-            }
-
-            .date-info {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 6px;
-            }
-        }
-    </style>
 </head>
 <body>
     <div class="container">
@@ -466,222 +461,216 @@ Here’s the complete, most updated code. Copy ALL of this and paste it into you
             <p class="subtitle">A hands-on lunch & learn for HR professionals</p>
         </div>
 
-        <div class="info-box">
-            <h3>What We'll Cover (60 minutes, 12-1pm):</h3>
-            <ul>
-                <li>AI Basics: Getting comfortable with Co-Pilot, ChatGPT, and Claude</li>
-                <li>Helpful frameworks for better prompts (RTF and CREATE methods)</li>
-                <li>Prompt chaining and refining outputs through iteration</li>
-                <li>Hands-on practice with real HR scenarios</li>
-                <li>Privacy considerations and best practices</li>
-                <li>Take-home templates you can use right away!</li>
-            </ul>
+```
+    <div class="info-box">
+        <h3>What We'll Cover (60 minutes, 12-1pm):</h3>
+        <ul>
+            <li>AI Basics: Getting comfortable with Co-Pilot, ChatGPT, and Claude</li>
+            <li>Helpful frameworks for better prompts (RTF and CREATE methods)</li>
+            <li>Prompt chaining and refining outputs through iteration</li>
+            <li>Hands-on practice with real HR scenarios</li>
+            <li>Privacy considerations and best practices</li>
+            <li>Take-home templates you can use right away!</li>
+        </ul>
+    </div>
+
+    <div class="user-info-section">
+        <h3>Your Information:</h3>
+        <div class="input-group">
+            <label class="input-label" for="voterName">Name *</label>
+            <input type="text" class="text-input" id="voterName" placeholder="Enter your name">
         </div>
-
-        <div class="user-info-section">
-            <h3>Your Information:</h3>
-            <div class="input-group">
-                <label class="input-label" for="voterName">Name *</label>
-                <input type="text" class="text-input" id="voterName" placeholder="Enter your name">
-            </div>
-            <div class="input-group">
-                <label class="input-label" for="voterEmail">Email Address *</label>
-                <input type="email" class="text-input" id="voterEmail" placeholder="Enter your email address">
-            </div>
-            <div class="input-group">
-                <label class="input-label" for="voterCompany">Company *</label>
-                <input type="text" class="text-input" id="voterCompany" placeholder="Enter your company name">
-            </div>
+        <div class="input-group">
+            <label class="input-label" for="voterEmail">Email Address *</label>
+            <input type="email" class="text-input" id="voterEmail" placeholder="Enter your email address">
         </div>
-
-        <div class="voting-section">
-            <h3>Select all dates that work for you:</h3>
-            
-            <div class="date-options">
-                <div class="date-option" data-date="2025-11-10">
-                    <div class="date-info">
-                        <div class="date-day">Monday, Nov 10</div>
-                        <div class="date-details">12:00 - 1:00 PM</div>
-                    </div>
-                    <div class="checkmark"></div>
-                </div>
-
-                <div class="date-option" data-date="2025-11-11">
-                    <div class="date-info">
-                        <div class="date-day">Tuesday, Nov 11</div>
-                        <div class="date-details">12:00 - 1:00 PM</div>
-                    </div>
-                    <div class="checkmark"></div>
-                </div>
-
-                <div class="date-option" data-date="2025-11-14">
-                    <div class="date-info">
-                        <div class="date-day">Friday, Nov 14</div>
-                        <div class="date-details">12:00 - 1:00 PM</div>
-                    </div>
-                    <div class="checkmark"></div>
-                </div>
-
-                <div class="date-option" data-date="2025-11-17">
-                    <div class="date-info">
-                        <div class="date-day">Monday, Nov 17</div>
-                        <div class="date-details">12:00 - 1:00 PM</div>
-                    </div>
-                    <div class="checkmark"></div>
-                </div>
-
-                <div class="date-option" data-date="2025-11-18">
-                    <div class="date-info">
-                        <div class="date-day">Tuesday, Nov 18</div>
-                        <div class="date-details">12:00 - 1:00 PM</div>
-                    </div>
-                    <div class="checkmark"></div>
-                </div>
-
-                <div class="date-option" data-date="2025-11-19">
-                    <div class="date-info">
-                        <div class="date-day">Wednesday, Nov 19</div>
-                        <div class="date-details">12:00 - 1:00 PM</div>
-                    </div>
-                    <div class="checkmark"></div>
-                </div>
-
-                <div class="date-option" data-date="2025-11-21">
-                    <div class="date-info">
-                        <div class="date-day">Friday, Nov 21</div>
-                        <div class="date-details">12:00 - 1:00 PM</div>
-                    </div>
-                    <div class="checkmark"></div>
-                </div>
-            </div>
-        </div>
-
-        <button class="submit-btn" id="submitBtn" disabled>Submit My Availability</button>
-        <div class="result-message" id="resultMessage"></div>
-
-        <div class="footer">
-            <strong>Questions or want to chat?</strong><br>
-            Violetta | <a href="mailto:violettadrobot@gmail.com">violettadrobot@gmail.com</a> | 617-869-7212
+        <div class="input-group">
+            <label class="input-label" for="voterCompany">Company *</label>
+            <input type="text" class="text-input" id="voterCompany" placeholder="Enter your company name">
         </div>
     </div>
 
-    <script>
-        // Your Google Apps Script Web App URL
-        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKDU7WR8MMHKPO1zmlynS4V8TbpKgkhJG57491pfWs-uN8hhsJ44PzrGXYkszDl6yk8g/exec';
-
-        const dateOptions = document.querySelectorAll('.date-option');
-        const voterName = document.getElementById('voterName');
-        const voterEmail = document.getElementById('voterEmail');
-        const voterCompany = document.getElementById('voterCompany');
-        const submitBtn = document.getElementById('submitBtn');
-        const resultMessage = document.getElementById('resultMessage');
+    <div class="voting-section">
+        <h3>Select all dates that work for you:</h3>
         
-        let selectedDates = [];
+        <div class="date-options">
+            <div class="date-option" data-date="2025-11-10">
+                <div class="date-info">
+                    <div class="date-day">Monday, Nov 10</div>
+                    <div class="date-details">12:00 - 1:00 PM</div>
+                </div>
+                <div class="checkmark"></div>
+            </div>
 
-        const dateLabels = {
-            '2025-11-10': 'Monday, Nov 10',
-            '2025-11-11': 'Tuesday, Nov 11',
-            '2025-11-14': 'Friday, Nov 14',
-            '2025-11-17': 'Monday, Nov 17',
-            '2025-11-18': 'Tuesday, Nov 18',
-            '2025-11-19': 'Wednesday, Nov 19',
-            '2025-11-21': 'Friday, Nov 21'
-        };
+            <div class="date-option" data-date="2025-11-11">
+                <div class="date-info">
+                    <div class="date-day">Tuesday, Nov 11</div>
+                    <div class="date-details">12:00 - 1:00 PM</div>
+                </div>
+                <div class="checkmark"></div>
+            </div>
 
-        dateOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                const date = option.dataset.date;
-                
-                if (option.classList.contains('selected')) {
-                    option.classList.remove('selected');
-                    selectedDates = selectedDates.filter(d => d !== date);
-                } else {
-                    option.classList.add('selected');
-                    selectedDates.push(date);
-                }
-                
-                updateSubmitButton();
-            });
-        });
+            <div class="date-option" data-date="2025-11-14">
+                <div class="date-info">
+                    <div class="date-day">Friday, Nov 14</div>
+                    <div class="date-details">12:00 - 1:00 PM</div>
+                </div>
+                <div class="checkmark"></div>
+            </div>
 
-        voterName.addEventListener('input', updateSubmitButton);
-        voterEmail.addEventListener('input', updateSubmitButton);
-        voterCompany.addEventListener('input', updateSubmitButton);
+            <div class="date-option" data-date="2025-11-17">
+                <div class="date-info">
+                    <div class="date-day">Monday, Nov 17</div>
+                    <div class="date-details">12:00 - 1:00 PM</div>
+                </div>
+                <div class="checkmark"></div>
+            </div>
 
-        function updateSubmitButton() {
-            if (voterName.value.trim() && voterEmail.value.trim() && voterCompany.value.trim() && selectedDates.length > 0) {
-                submitBtn.disabled = false;
+            <div class="date-option" data-date="2025-11-18">
+                <div class="date-info">
+                    <div class="date-day">Tuesday, Nov 18</div>
+                    <div class="date-details">12:00 - 1:00 PM</div>
+                </div>
+                <div class="checkmark"></div>
+            </div>
+
+            <div class="date-option" data-date="2025-11-19">
+                <div class="date-info">
+                    <div class="date-day">Wednesday, Nov 19</div>
+                    <div class="date-details">12:00 - 1:00 PM</div>
+                </div>
+                <div class="checkmark"></div>
+            </div>
+
+            <div class="date-option" data-date="2025-11-21">
+                <div class="date-info">
+                    <div class="date-day">Friday, Nov 21</div>
+                    <div class="date-details">12:00 - 1:00 PM</div>
+                </div>
+                <div class="checkmark"></div>
+            </div>
+        </div>
+    </div>
+
+    <button class="submit-btn" id="submitBtn" disabled>Submit My Availability</button>
+    <div class="result-message" id="resultMessage"></div>
+
+    <div class="footer">
+        <strong>Questions or want to chat?</strong><br>
+        Violetta | <a href="mailto:violettadrobot@gmail.com">violettadrobot@gmail.com</a> | 617-869-7212
+    </div>
+</div>
+
+<script>
+    // Your Google Apps Script Web App URL
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyKDU7WR8MMHKPO1zmlynS4V8TbpKgkhJG57491pfWs-uN8hhsJ44PzrGXYkszDl6yk8g/exec';
+
+    const dateOptions = document.querySelectorAll('.date-option');
+    const voterName = document.getElementById('voterName');
+    const voterEmail = document.getElementById('voterEmail');
+    const voterCompany = document.getElementById('voterCompany');
+    const submitBtn = document.getElementById('submitBtn');
+    const resultMessage = document.getElementById('resultMessage');
+    
+    let selectedDates = [];
+
+    const dateLabels = {
+        '2025-11-10': 'Monday, Nov 10',
+        '2025-11-11': 'Tuesday, Nov 11',
+        '2025-11-14': 'Friday, Nov 14',
+        '2025-11-17': 'Monday, Nov 17',
+        '2025-11-18': 'Tuesday, Nov 18',
+        '2025-11-19': 'Wednesday, Nov 19',
+        '2025-11-21': 'Friday, Nov 21'
+    };
+
+    dateOptions.forEach(option => {
+        option.addEventListener('click', () => {
+            const date = option.dataset.date;
+            
+            if (option.classList.contains('selected')) {
+                option.classList.remove('selected');
+                selectedDates = selectedDates.filter(d => d !== date);
             } else {
-                submitBtn.disabled = true;
+                option.classList.add('selected');
+                selectedDates.push(date);
             }
-        }
-
-        async function submitVote() {
-            const name = voterName.value.trim();
-            const email = voterEmail.value.trim();
-            const company = voterCompany.value.trim();
             
-            if (!name || !email || !company || selectedDates.length === 0) {
-                return;
-            }
+            updateSubmitButton();
+        });
+    });
 
-            // Show loading state
+    voterName.addEventListener('input', updateSubmitButton);
+    voterEmail.addEventListener('input', updateSubmitButton);
+    voterCompany.addEventListener('input', updateSubmitButton);
+
+    function updateSubmitButton() {
+        if (voterName.value.trim() && voterEmail.value.trim() && voterCompany.value.trim() && selectedDates.length > 0) {
+            submitBtn.disabled = false;
+        } else {
             submitBtn.disabled = true;
-            submitBtn.classList.add('loading');
-            submitBtn.textContent = 'Submitting...';
-            
-            try {
-                const response = await fetch(GOOGLE_SCRIPT_URL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        name: name,
-                        email: email,
-                        company: company,
-                        dates: selectedDates.map(date => dateLabels[date])
-                    })
-                });
+        }
+    }
 
-                // Note: With no-cors mode, we can't read the response
-                // But if we get here without error, it likely succeeded
-                
-                resultMessage.className = 'result-message success';
-                resultMessage.textContent = '✅ Thanks for voting! Your response has been recorded in the database.';
-                
-                submitBtn.textContent = 'Vote Submitted!';
-                submitBtn.classList.remove('loading');
-                
-                // Disable form
-                dateOptions.forEach(opt => opt.style.pointerEvents = 'none');
-                voterName.disabled = true;
-                voterEmail.disabled = true;
-                voterCompany.disabled = true;
-                
-            } catch (error) {
-                console.error('Error submitting vote:', error);
-                
-                resultMessage.className = 'result-message error';
-                resultMessage.textContent = '❌ There was an error submitting your vote. Please try again or contact Violetta directly.';
-                
-                submitBtn.disabled = false;
-                submitBtn.classList.remove('loading');
-                submitBtn.textContent = 'Submit My Availability';
-            }
+    async function submitVote() {
+        const name = voterName.value.trim();
+        const email = voterEmail.value.trim();
+        const company = voterCompany.value.trim();
+        
+        if (!name || !email || !company || selectedDates.length === 0) {
+            return;
         }
 
-        submitBtn.addEventListener('click', submitVote);
-    </script>
-</body>
-</html>
+        // Show loading state
+        submitBtn.disabled = true;
+        submitBtn.classList.add('loading');
+        submitBtn.textContent = 'Submitting...';
+        
+        try {
+            const response = await fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: name,
+                    email: email,
+                    company: company,
+                    dates: selectedDates.map(date => dateLabels[date])
+                })
+            });
+
+            // Note: With no-cors mode, we can't read the response
+            // But if we get here without error, it likely succeeded
+            
+            resultMessage.className = 'result-message success';
+            resultMessage.textContent = '✅ Thanks for voting! Your response has been recorded in the database.';
+            
+            submitBtn.textContent = 'Vote Submitted!';
+            submitBtn.classList.remove('loading');
+            
+            // Disable form
+            dateOptions.forEach(opt => opt.style.pointerEvents = 'none');
+            voterName.disabled = true;
+            voterEmail.disabled = true;
+            voterCompany.disabled = true;
+            
+        } catch (error) {
+            console.error('Error submitting vote:', error);
+            
+            resultMessage.className = 'result-message error';
+            resultMessage.textContent = '❌ There was an error submitting your vote. Please try again or contact Violetta directly.';
+            
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('loading');
+            submitBtn.textContent = 'Submit My Availability';
+        }
+    }
+
+    submitBtn.addEventListener('click', submitVote);
+</script>
 ```
 
-**This code includes:**
-✅ Your latest Google Script URL
-✅ Email field properly integrated
-✅ All fields in correct order: Name, Email, Company, Dates
-✅ All styling and functionality
-
-Copy this entire block, paste it into GitHub, commit, wait 2 minutes, then test!​​​​​​​​​​​​​​​​
+</body>
+</html>
