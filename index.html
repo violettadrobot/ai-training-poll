@@ -8,7 +8,13 @@ Here’s the complete, most updated code. Copy ALL of this and paste it into you
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AI for Novices: From Curious to Confident</title>
     <style>
-        * {
+       sheet.appendRow([
+  new Date(),           // Column A: Timestamp
+  data.name,           // Column B: Name
+  data.email,          // Column C: Email Address
+  data.company,        // Column D: Company
+  data.dates.join(', ') // Column E: Selected Dates
+]);
             margin: 0;
             padding: 0;
             box-sizing: border-box;
