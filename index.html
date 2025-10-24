@@ -481,6 +481,10 @@
             <input type="text" class="text-input" id="voterName" placeholder="Enter your name">
         </div>
         <div class="input-group">
+            <label class="input-label" for="voterEmail">Email Address *</label>
+            <input type="email" class="text-input" id="voterEmail" placeholder="Enter your email address">
+        </div>
+        <div class="input-group">
             <label class="input-label" for="voterCompany">Company *</label>
             <input type="text" class="text-input" id="voterCompany" placeholder="Enter your company name">
         </div>
@@ -563,6 +567,7 @@
 
     const dateOptions = document.querySelectorAll('.date-option');
     const voterName = document.getElementById('voterName');
+    const voterEmail = document.getElementById('voterEmail');
     const voterCompany = document.getElementById('voterCompany');
     const submitBtn = document.getElementById('submitBtn');
     const resultMessage = document.getElementById('resultMessage');
@@ -596,10 +601,11 @@
     });
 
     voterName.addEventListener('input', updateSubmitButton);
+    voterEmail.addEventListener('input', updateSubmitButton);
     voterCompany.addEventListener('input', updateSubmitButton);
 
     function updateSubmitButton() {
-        if (voterName.value.trim() && voterCompany.value.trim() && selectedDates.length > 0) {
+        if (voterName.value.trim() && voterEmail.value.trim() && voterCompany.value.trim() && selectedDates.length > 0) {
             submitBtn.disabled = false;
         } else {
             submitBtn.disabled = true;
@@ -608,9 +614,10 @@
 
     async function submitVote() {
         const name = voterName.value.trim();
+        const email = voterEmail.value.trim();
         const company = voterCompany.value.trim();
         
-        if (!name || !company || selectedDates.length === 0) {
+        if (!name || !email || !company || selectedDates.length === 0) {
             return;
         }
 
@@ -628,6 +635,7 @@
                 },
                 body: JSON.stringify({
                     name: name,
+                    email: email,
                     company: company,
                     dates: selectedDates.map(date => dateLabels[date])
                 })
@@ -645,6 +653,7 @@
             // Disable form
             dateOptions.forEach(opt => opt.style.pointerEvents = 'none');
             voterName.disabled = true;
+            voterEmail.disabled = true;
             voterCompany.disabled = true;
             
         } catch (error) {
