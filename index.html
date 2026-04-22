@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Training ROI Calculator | Violetta Drobot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+        }
+    </style>
+</head>
+<body>
+    <div id="app"></div>
+
+    <script>
+        class ROICalculator {
+            constructor() {
+                this.trainingCost = 5000;
+                this.employeeCount = 1;
+                this.salaryType = 'average';
+                this.averageSalary = 100000;
+                this.employees = [{ salary: 100000 }];
+                this.activities = [
+                    { name: 'Email Triage', hoursSavedPerDay: 2 },
+                    { name: 'Benefits Q&A', hoursSavedPerDay: 1 },
+                    { name: 'Onboarding', hoursSavedPerDay: 0.5 }
+                ];
+                this.activeTab = 'overview';
+                this.workDaysPerYear = 250;
+                this.init();
+            }
+
+            init() {
+                this.render();
+                this.attachEventListeners();
+            }
+
+            calculateSalaries() {
+                if (this.salaryType === 'average') {
+                    return Array(this.employeeCount).fill(this.averageSalary);
+                }
+                return this.employees.map(e => e.salary);
+            }
+
+            calculateHourlyRate(salary) {
+                return salary / 2080;
+            }
+
+            calculateTotalHoursSaved() {
+                return this.activities.reduce((total, activity) => {
+                    return total + (activity.hoursSavedPerDay * this.workDaysPerYear);
+                }, 0);
+            }
+
+            calculateBenefit() {
+                const salaries = this.calculateSalaries();
+                let totalBenefit = 0;
+
+                this.activities.forEach(activity => {
+                    const hoursSaved = activity.hoursSavedPerDay * this.workDaysPerYear;
+                    salaries.forEach(salary => {
+                        const hourlyRate = this.calculateHourlyRate(salary);
+                        totalBenefit += hoursSaved * hourlyRate;
+                    });
+                });
+
+                return totalBenefit;
+            }
+
+            formatCurrency(num) {
+                return new Intl.NumberFormat('en-US', {
+                    style: 'currency',
+                    currency: 'USD',
+                    maximumFractionDigits: 0
+                }).format(num);
+            }
+
+            render() {
+                const totalBenefit = this.calculateBenefit();
+                const netBenefit = totalBenefit - this.trainingCost;
+                const roi = this.trainingCost > 0 ? ((totalBenefit - this.trainingCost) / this.trainingCost * 100).toFixed(0) : 0;
+                const monthlyBenefit = totalBenefit / 12;
+                const breakEvenMonths = (this.trainingCost / monthlyBenefit).toFixed(2);
+                const breakEvenDays = Math.round(breakEvenMonths * 30);
+                const totalHoursSaved = this.calculateTotalHoursSaved();
+                const salaries = this.calculateSalaries();
+                const averageHourlyRate = salaries.reduce((a, b) => a + b, 0) / this.employeeCount / 2080;
+                const costPerHour = this.trainingCost / totalHoursSaved;
+
+                const html = `
+                    <div class="w-full min-h-screen" style="background-color: #0F172A;">
+                        <!-- Header -->
+                        <div class="border-b" style="border-color: #1E293B; background-color: #0F172A;">
+                            <div class="max-w-7xl mx-auto px-6 py-12">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="w-1 h-8" style="background-color: #06B6D4;"></div>
+                                    <h1 class="text-4xl font-bold" style="color: #F1F5F9;">AI Training ROI Calculator</h1>
+                                </div>
+                                <p style="color: #CBD5E1;">Calculate the financial impact of AI training on your HR team</p>
+                            </div>
+                        </div>
+
+                        <!-- Tab Navigation -->
+                        <div class="border-b" style="border-color: #1E293B; background-color: #0F172A;">
+                            <div class="max-w-7xl mx-auto px-6 flex gap-4">
+                                <button onclick="calculator.setTab('overview')" class="px-6 py-4 font-medium transition-all border-b-2" style="border-color: ${this.activeTab === 'overview' ? '#06B6D4' : 'transparent'}; color: ${this.activeTab === 'overview' ? '#06B6D4' : '#CBD5E1'};">
+                                    Calculator
+                                </button>
+                                <button onclick="calculator.setTab('breakeven')" class="px-6 py-4 font-medium transition-all border-b-2" style="border-color: ${this.activeTab === 'breakeven' ? '#06B6D4' : 'transparent'}; color: ${this.activeTab === 'breakeven' ? '#06B6D4' : '#CBD5E1'};">
+                                    Break-Even Analysis
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="max-w-7xl mx-auto px-6 py-8">
+                            ${this.activeTab === 'overview' ? this.renderCalculator(totalBenefit, netBenefit, roi, monthlyBenefit, totalHoursSaved, averageHourlyRate, costPerHour) : this.renderBreakEven(this.trainingCost, monthlyBenefit, breakEvenDays, breakEvenMonths, netBenefit)}
+                        </div>
+
+                        <!-- Footer -->
+                        <div class="border-t py-8 mt-16" style="border-color: #1E293B; background-color: #0F172A;">
+                            <div class="max-w-7xl mx-auto px-6">
+                                <div class="grid grid-cols-2 gap-8 mb-8">
+                                    <div style="color: #CBD5E1;">
+                                        <p class="text-sm mb-2">Calculator based on Wayne Cascio's Investing in People Framework</p>
+                                        <p class="text-xs">Annual work days: 250 | Assumes 2,080 hours per year (52 weeks × 40 hours)</p>
+                                    </div>
+                                    <div class="text-right">
+                                        <p class="text-sm font-semibold mb-3" style="color: #FCD34D;">Designed by Violetta Drobot</p>
+                                        <div class="flex gap-4 justify-end">
+                                            <a href="https://www.linkedin.com/in/violetta-drobot" target="_blank" rel="noopener noreferrer" class="flex items-center gap-2 hover:opacity-80 transition" style="color: #06B6D4;">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.474-2.237-1.668-2.237-.909 0-1.451.613-1.688 1.213-.087.211-.109.505-.109.799v5.794h-3.557s.047-9.411 0-10.381h3.557v1.468c.459-.707 1.282-1.714 3.119-1.714 2.278 0 3.986 1.489 3.986 4.691v5.936zM5.337 8.855c-1.144 0-1.915-.758-1.915-1.706 0-.956.766-1.71 1.955-1.71 1.188 0 1.913.754 1.937 1.71 0 .948-.749 1.706-1.977 1.706zm1.946 11.597H3.392V9.071h3.891v11.381zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.225 0z"/></svg>
+                                                <span class="text-sm">LinkedIn</span>
+                                            </a>
+                                            <a href="mailto:violettadrobot@gmail.com" class="flex items-center gap-2 hover:opacity-80 transition" style="color: #06B6D4;">
+                                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-10 5L2 7"/></svg>
+                                                <span class="text-sm">Email</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="border-t pt-6 text-center" style="border-color: #1E293B; color: #CBD5E1;">
+                                    <p class="text-xs">© Violetta Drobot - AI Compliance Consultant</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+
+                document.getElementById('app').innerHTML = html;
+            }
+
+            renderCalculator(totalBenefit, netBenefit, roi, monthlyBenefit, totalHoursSaved, averageHourlyRate, costPerHour) {
+                return `
+                    <div class="grid grid-cols-2 gap-8">
+                        <!-- LEFT INPUTS -->
+                        <div class="space-y-6">
+                            <div class="p-6 rounded-lg" style="background-color: #1E293B;">
+                                <h3 class="text-lg font-bold mb-4" style="color: #F1F5F9;">Training Investment</h3>
+                                <label class="block text-sm mb-2" style="color: #CBD5E1;">Training Cost ($)</label>
+                                <input type="number" value="${this.trainingCost}" onchange="calculator.setTrainingCost(this.value)" class="w-full px-4 py-3 rounded-lg border-2" style="background-color: #0F172A; border-color: #0EA5E9; color: #F1F5F9;"/>
+                            </div>
+
+                            <div class="p-6 rounded-lg" style="background-color: #1E293B;">
+                                <h3 class="text-lg font-bold mb-4" style="color: #F1F5F9;">Team Information</h3>
+                                <label class="block text-sm mb-2" style="color: #CBD5E1;">Number of Employees</label>
+                                <input type="number" value="${this.employeeCount}" onchange="calculator.setEmployeeCount(this.value)" class="w-full px-4 py-3 rounded-lg border-2" style="background-color: #0F172A; border-color: #0EA5E9; color: #F1F5F9;"/>
+                                
+                                <div class="mt-4">
+                                    <label class="block text-sm mb-2" style="color: #CBD5E1;">Salary Input Method</label>
+                                    <label style="color: #F1F5F9;" class="text-sm">
+                                        <input type="radio" name="salaryType" value="average" ${this.salaryType === 'average' ? 'checked' : ''} onchange="calculator.setSalaryType('average')"/> Average
+                                    </label>
+                                    <label style="color: #F1F5F9;" class="text-sm ml-4">
+                                        <input type="radio" name="salaryType" value="individual" ${this.salaryType === 'individual' ? 'checked' : ''} onchange="calculator.setSalaryType('individual')"/> Individual
+                                    </label>
+                                </div>
+
+                                <div class="mt-4">
+                                    <label class="block text-sm mb-2" style="color: #CBD5E1;">Average Annual Salary ($)</label>
+                                    <input type="number" value="${this.averageSalary}" onchange="calculator.setAverageSalary(this.value)" class="w-full px-4 py-3 rounded-lg border-2" style="background-color: #0F172A; border-color: #0EA5E9; color: #F1F5F9;"/>
+                                </div>
+                            </div>
+
+                            <div class="p-6 rounded-lg" style="background-color: #1E293B;">
+                                <h3 class="text-lg font-bold mb-4" style="color: #F1F5F9;">Hours Saved Per Activity</h3>
+                                ${this.activities.map((activity, index) => `
+                                    <div class="flex gap-2 mb-2">
+                                        <input type="text" value="${activity.name}" onchange="calculator.setActivityName(${index}, this.value)" placeholder="Activity" class="flex-1 px-3 py-2 rounded-lg border-2 text-sm" style="background-color: #0F172A; border-color: #0EA5E9; color: #F1F5F9;"/>
+                                        <input type="number" value="${activity.hoursSavedPerDay}" step="0.5" onchange="calculator.setActivityHours(${index}, this.value)" class="w-24 px-3 py-2 rounded-lg border-2 text-sm" style="background-color: #0F172A; border-color: #0EA5E9; color: #F1F5F9;"/>
+                                        ${this.activities.length > 1 ? `<button onclick="calculator.removeActivity(${index})" class="px-3 py-2 rounded-lg text-sm font-medium" style="background-color: #0C4F64; color: #FCD34D;">×</button>` : ''}
+                                    </div>
+                                `).join('')}
+                                <button onclick="calculator.addActivity()" class="w-full mt-3 px-4 py-2 rounded-lg font-medium text-sm" style="background-color: #0EA5E9; color: #F1F5F9;">+ Add Activity</button>
+                            </div>
+                        </div>
+
+                        <!-- RIGHT RESULTS -->
+                        <div class="space-y-6">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="p-6 rounded-lg border" style="background-color: #1E293B; border-color: #0EA5E9;">
+                                    <p style="color: #CBD5E1;" class="text-sm">Annual Benefit</p>
+                                    <p class="text-2xl font-bold" style="color: #06B6D4;">${this.formatCurrency(totalBenefit)}</p>
+                                </div>
+                                <div class="p-6 rounded-lg border" style="background-color: #1E293B; border-color: #0EA5E9;">
+                                    <p style="color: #CBD5E1;" class="text-sm">ROI</p>
+                                    <p class="text-2xl font-bold" style="color: #FCD34D;">${roi}%</p>
+                                </div>
+                                <div class="p-6 rounded-lg border" style="background-color: #1E293B; border-color: #0EA5E9;">
+                                    <p style="color: #CBD5E1;" class="text-sm">Break-Even</p>
+                                    <p class="text-2xl font-bold" style="color: #06B6D4;">${Math.round(this.trainingCost / monthlyBenefit * 30)} days</p>
+                                </div>
+                                <div class="p-6 rounded-lg border" style="background-color: #1E293B; border-color: #0EA5E9;">
+                                    <p style="color: #CBD5E1;" class="text-sm">Net Benefit (Y1)</p>
+                                    <p class="text-2xl font-bold" style="color: #FCD34D;">${this.formatCurrency(netBenefit)}</p>
+                                </div>
+                            </div>
+
+                            <div class="p-6 rounded-lg" style="background-color: #1E293B; border-left: 4px solid #06B6D4;">
+                                <h3 class="text-lg font-bold mb-4" style="color: #F1F5F9;">Benefit Breakdown</h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between">
+                                        <span style="color: #CBD5E1;" class="text-sm">Hours Saved Per Year</span>
+                                        <span style="color: #06B6D4;" class="font-semibold text-sm">${totalHoursSaved.toLocaleString()} hrs</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span style="color: #CBD5E1;" class="text-sm">Average Hourly Rate</span>
+                                        <span style="color: #06B6D4;" class="font-semibold text-sm">$${averageHourlyRate.toFixed(2)}/hr</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span style="color: #CBD5E1;" class="text-sm">Cost Per Hour Saved</span>
+                                        <span style="color: #06B6D4;" class="font-semibold text-sm">$${costPerHour.toFixed(2)}/hr</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span style="color: #CBD5E1;" class="text-sm">Monthly Benefit</span>
+                                        <span style="color: #06B6D4;" class="font-semibold text-sm">${this.formatCurrency(monthlyBenefit)}</span>
+                                    </div>
+                                    <div class="border-t pt-3" style="border-color: #0C4F64;">
+                                        <div class="flex justify-between">
+                                            <span style="color: #F1F5F9;" class="font-semibold text-sm">Total Annual Benefit</span>
+                                            <span style="color: #FCD34D;" class="text-lg font-bold">${this.formatCurrency(totalBenefit)}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="p-6 rounded-lg border-2" style="background-color: #0C4F64; border-color: #06B6D4;">
+                                <div class="flex gap-3">
+                                    <p style="color: #F1F5F9;" class="font-semibold text-sm mb-1">Key Insight</p>
+                                </div>
+                                <p style="color: #CBD5E1;" class="text-sm">For every $1 invested, you get $${(totalBenefit / this.trainingCost).toFixed(2)} in return. Your investment pays for itself in ${Math.round(this.trainingCost / monthlyBenefit * 30)} days.</p>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+
+            renderBreakEven(trainingCost, monthlyBenefit, breakEvenDays, breakEvenMonths, netBenefit) {
+                return `
+                    <div class="space-y-8">
+                        <div class="grid grid-cols-3 gap-4">
+                            <div class="p-6 rounded-lg" style="background-color: #1E293B; border-left: 4px solid #06B6D4;">
+                                <p style="color: #CBD5E1;" class="text-sm mb-2">Investment</p>
+                                <p class="text-3xl font-bold" style="color: #F1F5F9;">${this.formatCurrency(trainingCost)}</p>
+                            </div>
+                            <div class="p-6 rounded-lg" style="background-color: #1E293B; border-left: 4px solid #06B6D4;">
+                                <p style="color: #CBD5E1;" class="text-sm mb-2">Monthly Benefit</p>
+                                <p class="text-3xl font-bold" style="color: #06B6D4;">${this.formatCurrency(monthlyBenefit)}</p>
+                            </div>
+                            <div class="p-6 rounded-lg" style="background-color: #1E293B; border-left: 4px solid #FCD34D;">
+                                <p style="color: #CBD5E1;" class="text-sm mb-2">Break-Even</p>
+                                <p class="text-3xl font-bold" style="color: #FCD34D;">${breakEvenDays} days</p>
+                            </div>
+                        </div>
+
+                        <div class="p-8 rounded-lg" style="background-color: #1E293B;">
+                            <h3 class="text-lg font-bold mb-6" style="color: #F1F5F9;">Cumulative Benefit Timeline</h3>
+                            <div class="grid grid-cols-4 gap-2">
+                                ${[1, 3, 6, 12].map(month => {
+                                    const cumBenefit = monthlyBenefit * month;
+                                    const cumProfit = cumBenefit - trainingCost;
+                                    const isBreakEven = month >= Math.ceil(breakEvenMonths);
+                                    return `
+                                        <div class="p-3 rounded-lg border-2" style="border-color: ${isBreakEven ? '#06B6D4' : '#334155'}; background-color: ${isBreakEven ? '#0C4F64' : '#1E293B'};">
+                                            <p class="text-xs font-semibold mb-1" style="color: #F1F5F9;">Month ${month}</p>
+                                            <p class="text-sm font-bold" style="color: ${isBreakEven ? '#FCD34D' : '#F1F5F9'};">${this.formatCurrency(cumProfit)}</p>
+                                            <p class="text-xs mt-1 font-medium" style="color: #F1F5F9;">${isBreakEven ? '✓ Positive' : `${(Math.ceil(breakEvenMonths) - month)} mo to BE`}</p>
+                                        </div>
+                                    `;
+                                }).join('')}
+                            </div>
+                        </div>
+
+                        <div class="p-8 rounded-lg" style="background-color: #0C4F64;">
+                            <h3 class="text-lg font-bold mb-4" style="color: #06B6D4;">What This Means</h3>
+                            <ul class="space-y-3" style="color: #CBD5E1;">
+                                <li class="text-sm">✓ Investment fully recouped in ${breakEvenDays} days</li>
+                                <li class="text-sm">✓ Month 1: ${this.formatCurrency(monthlyBenefit - trainingCost)} net profit</li>
+                                <li class="text-sm">✓ Year 1: ${this.formatCurrency(netBenefit)} total benefit</li>
+                                <li class="text-sm">✓ Year-over-year: Unlimited benefit with no additional training cost</li>
+                            </ul>
+                        </div>
+                    </div>
+                `;
+            }
+
+            setTab(tab) {
+                this.activeTab = tab;
+                this.render();
+            }
+
+            setTrainingCost(value) {
+                this.trainingCost = parseFloat(value) || 0;
+                this.render();
+            }
+
+            setEmployeeCount(value) {
+                const count = parseInt(value) || 1;
+                this.employeeCount = count;
+                this.employees = Array(count).fill(null).map((_, i) => ({
+                    salary: this.employees[i]?.salary || this.averageSalary
+                }));
+                this.render();
+            }
+
+            setSalaryType(type) {
+                this.salaryType = type;
+                this.render();
+            }
+
+            setAverageSalary(value) {
+                this.averageSalary = parseFloat(value) || 0;
+                this.render();
+            }
+
+            setActivityName(index, name) {
+                this.activities[index].name = name;
+                this.render();
+            }
+
+            setActivityHours(index, hours) {
+                this.activities[index].hoursSavedPerDay = parseFloat(hours) || 0;
+                this.render();
+            }
+
+            addActivity() {
+                this.activities.push({ name: '', hoursSavedPerDay: 0 });
+                this.render();
+            }
+
+            removeActivity(index) {
+                this.activities.splice(index, 1);
+                this.render();
+            }
+        }
+
+        const calculator = new ROICalculator();
+    </script>
+</body>
+</html>
